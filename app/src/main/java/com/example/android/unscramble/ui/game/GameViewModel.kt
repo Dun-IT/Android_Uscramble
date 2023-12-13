@@ -9,9 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
-/**
- * ViewModel containing the app data and methods to process the data
- */
 class GameViewModel : ViewModel() {
     private val _score = MutableLiveData(0)
     val score: LiveData<Int>
@@ -38,7 +35,6 @@ class GameViewModel : ViewModel() {
         }
     }
 
-    // List of words used in the game
     private var wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
@@ -49,9 +45,6 @@ class GameViewModel : ViewModel() {
         getNextWord()
     }
 
-    /*
-     * Updates currentWord and currentScrambledWord with the next word.
-     */
     private fun getNextWord() {
         currentWord = allWordsList.random()
         val tempWord = currentWord.toCharArray()
@@ -70,9 +63,6 @@ class GameViewModel : ViewModel() {
         }
     }
 
-    /*
-     * Re-initializes the game data to restart the game.
-     */
     fun reinitializeData() {
         _score.value = 0
         _currentWordCount.value = 0
@@ -81,9 +71,6 @@ class GameViewModel : ViewModel() {
         isGameOver = false
     }
 
-    /*
-    * Increases the game score if the player’s word is correct.
-    */
     private fun increaseScore() {
         _score.value = _score.value?.plus(SCORE_INCREASE)
     }
