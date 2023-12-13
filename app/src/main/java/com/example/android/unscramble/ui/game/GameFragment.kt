@@ -11,24 +11,16 @@ import com.example.android.unscramble.R
 import com.example.android.unscramble.databinding.GameFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-/**
- * Fragment where the game is played, contains the game logic.
- */
 class GameFragment : Fragment() {
 
-    // Binding object instance with access to the views in the game_fragment.xml layout
     private lateinit var binding: GameFragmentBinding
 
-    // Create a ViewModel the first time the fragment is created.
-    // If the fragment is re-created, it receives the same GameViewModel instance created by the
-    // first fragment.
     private val viewModel: GameViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout XML file and return a binding object instance
         binding = DataBindingUtil.inflate(inflater, R.layout.game_fragment, container, false)
         return binding.root
     }
@@ -41,17 +33,11 @@ class GameFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // Setup a click listener for the Submit and Skip buttons.
         binding.submit.setOnClickListener { onSubmitWord() }
         binding.skip.setOnClickListener { onSkipWord() }
         if (viewModel.isGameOver()) { showFinalScoreDialog() }
     }
 
-    /*
-    * Checks the user's word, and updates the score accordingly.
-    * Displays the next scrambled word.
-    * After the last word, the user is shown a Dialog with the final score.
-    */
     private fun onSubmitWord() {
         val playerWord = binding.textInputEditText.text.toString()
 
@@ -65,11 +51,6 @@ class GameFragment : Fragment() {
         }
     }
 
-    /*
-     * Skips the current word without changing the score.
-     * Increases the word count.
-     * After the last word, the user is shown a Dialog with the final score.
-     */
     private fun onSkipWord() {
         if (viewModel.nextWord()) {
             setErrorTextField(false)
@@ -78,9 +59,6 @@ class GameFragment : Fragment() {
         }
     }
 
-    /*
-     * Creates and shows an AlertDialog with final score.
-     */
     private fun showFinalScoreDialog() {
         MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.congratulations))
@@ -94,26 +72,16 @@ class GameFragment : Fragment() {
                 }
                 .show()
     }
-
-    /*
-     * Re-initializes the data in the ViewModel and updates the views with the new data, to
-     * restart the game.
-     */
+    
     private fun restartGame() {
         viewModel.reinitializeData()
         setErrorTextField(false)
     }
 
-    /*
-     * Exits the game.
-     */
     private fun exitGame() {
         activity?.finish()
     }
 
-    /*
-    * Sets and resets the text field error status.
-    */
     private fun setErrorTextField(error: Boolean) {
         if (error) {
             binding.textField.isErrorEnabled = true
